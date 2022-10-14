@@ -3,8 +3,8 @@
   @@container
     ~~~
     <img src="/assets/logo.png" style="max-width:100%;padding-bottom:20px"/>
-    <h2>The <i>Elegant</i> Machine Learning Stack</h2>
-    Flux is a 100% pure-Julia stack and provides lightweight abstractions on top of Julia's native GPU and AD support. It makes the easy things easy while remaining fully hackable.
+    <h2>HACKED</h2>
+    HACKED
     ~~~
 
     @@buttons
