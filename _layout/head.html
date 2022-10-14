@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+  <script>
+    var base = document.querySelector('base');
+    base.href = `${window.location.protocol}//${window.location.hostname}`;
+  </script>
   <head>
+    <!-- Change base URL dynamically for previews. Look at the script tag above. -->
+    <base href="">
 		<!-- corresponds to the old assets/css/style.css -->
     <style>
 	    #cppn{

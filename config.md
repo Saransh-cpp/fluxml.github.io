@@ -14,8 +14,8 @@ website_twitter_url = "https://twitter.com/FluxML?ref_src=twsrc%5Etfw"
 
 ignore = ["CONTRIBUTING.md"]
 
-prepath     = get(ENV, "PREVIEW_FRANKLIN_PREPATH", ".")
-website_url = get(ENV, "PREVIEW_FRANKLIN_WEBSITE_URL", "fluxml.ai")
+prepath     = get(ENV, "PREVIEW_FRANKLIN_PREPATH", "fluxml.github.io")
+website_url = get(ENV, "PREVIEW_FRANKLIN_WEBSITE_URL", "saransh-cpp.github.io")
 +++
 
 \newcommand{\totop}{~~~<p><a href="#top">⇧ back to top</a></p>~~~}
