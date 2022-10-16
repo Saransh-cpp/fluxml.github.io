@@ -14,7 +14,7 @@ website_twitter_url = "https://twitter.com/FluxML?ref_src=twsrc%5Etfw"
 
 ignore = ["CONTRIBUTING.md"]
 
-prepath     = get(ENV, "PREVIEW_FRANKLIN_PREPATH", ".")
+prepath     = get(ENV, "PREVIEW_FRANKLIN_PREPATH", "fluxml.github.io")
 website_url = get(ENV, "PREVIEW_FRANKLIN_WEBSITE_URL", "fluxml.ai")
 +++
 
