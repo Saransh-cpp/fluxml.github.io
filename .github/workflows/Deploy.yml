@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - master
+      - node-deprecation
   pull_request:
   workflow_dispatch:
 
