@@ -1,0 +1,265 @@
+<!DOCTYPE html> <html lang=en > <style> #cppn{ position:absolute; top:0; bottom:0; height: 100%; width: 100vw; } iframe { display: block; border-style:none; } </style> <meta property="og:title" content=Flux.jl > <meta property="og:description" content="The elegant machine learning library"> <meta property="og:image" content="/assets/images/FluxGitHubPreview.png"> <meta property="og:url" content=fluxml.ai > <meta name="twitter:title" content=Flux.jl > <meta name="twitter:description" content="The elegant machine learning library"> <meta name="twitter:image" content="/assets/images/FluxGitHubPreview.png"> <meta name="twitter:card" content=summary_large_image > <link rel=apple-touch-icon  sizes=180x180  href="assets/favicon_io/apple-touch-icon.png"> <link rel=icon  type="image/png" sizes=32x32  href="assets/favicon_io/favicon-32x32.png"> <link rel=icon  type="image/png" sizes=16x16  href="assets/favicon_io/favicon-16x16.png"> <link rel=manifest  href="assets/favicon_io/site.webmanifest"> <script async src="https://www.googletagmanager.com/gtag/js?id=UA-36890222-9"></script> <script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-36890222-9'); </script> <meta charset=utf-8 > <meta name=viewport  content="width=device-width, initial-scale=1, shrink-to-fit=no"> <link rel=stylesheet  href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin=anonymous > <link rel=stylesheet  href="../../css/script_default.css"> <link rel=stylesheet  href="../../css/site.css"> <link rel=stylesheet  href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin=anonymous > <link rel=stylesheet  href="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin=anonymous > <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/katex.min.js" integrity="sha384-K3vbOmF2BtaVai+Qk37uypf7VrgBubhQreNQe9aGsz9lB63dIFiQVlJbr92dw2Lx" crossorigin=anonymous ></script> <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/contrib/auto-render.min.js" integrity="sha384-kmZOZB5ObwgQnS/DuDg6TScgOiWWBiVt0plIRkZCmE6rDZGrEOQeHM5PcHi+nyqe" crossorigin=anonymous  onload="renderMathInElement(document.body, { delimiters: [ {left: '$[[', right: ']]', display: true}, {left: '\\[', right: '\\]', display: true}, {left: '[[', right: ']]', display: false} ] });"> </script> <title>Flux – Elegant ML</title> <nav class="navbar navbar-expand-lg navbar-dark container lighter"> <a class=navbar-brand  href="../../"> <div class=logo  style="font-size:30pt;margin-top:-15px;margin-bottom:-10px;">flux</div> </a> <button class=navbar-toggler  type=button  data-toggle=collapse  data-target="#navbarSupportedContent" aria-controls=navbarSupportedContent  aria-expanded=false  aria-label="Toggle navigation"> <span class=navbar-toggler-icon ></span> </button> <div class="collapse navbar-collapse" id=navbarSupportedContent > <ul class="navbar-nav mr-auto"> <li class=nav-item > <a class=nav-link  href="../../getting_started/">Getting Started</a> <li class=nav-item > <a class=nav-link  href="https://fluxml.ai/Flux.jl/" target=_blank >Docs</a> <li class=nav-item > <a class=nav-link  href="../../blog/">Blog</a> <li class=nav-item > <a class=nav-link  href="../../tutorials/">Tutorials</a> <li class=nav-item > <a class=nav-link  href="https://fluxml.ai/Flux.jl/dev/ecosystem/">Ecosystem</a> <li class=nav-item > <a class=nav-link  href="../../gsoc/">GSoC</a> <li class=nav-item > <a class=nav-link  href="https://discourse.julialang.org/c/domain/ML" target=_blank >Discuss</a> <li class=nav-item > <a class=nav-link  href="https://github.com/FluxML/Flux.jl" target=_blank >GitHub</a> <li class=nav-item > <a class=nav-link  href="https://stackoverflow.com/questions/tagged/flux.jl" target=_blank >Stack Overflow</a> <li class=nav-item > <a class=nav-link  href="https://github.com/FluxML/Flux.jl/blob/master/CONTRIBUTING.md" target=_blank >Contribute</a> </ul> </div> </nav> <div class=content > <div class=container > <h1>Deep Learning with Flux - A 60 Minute Blitz</h1> <div class=franklin-content > <p>This is a quick intro to <a href="https://github.com/FluxML/Flux.jl">Flux</a> loosely based on <a href="https://pytorch.org/tutorials/beginner/deep_learning_60min_blitz.html">PyTorch&#39;s tutorial</a>. It introduces basic Julia programming, as well Zygote, a source-to-source automatic differentiation &#40;AD&#41; framework in Julia. We&#39;ll use these tools to build a very simple neural network.</p> <h2 id=arrays ><a href="#arrays" class=header-anchor >Arrays</a></h2> <p>The starting point for all of our models is the <code>Array</code> &#40;sometimes referred to as a <code>Tensor</code> in other frameworks&#41;. This is really just a list of numbers, which might be arranged into a shape like a square. Let&#39;s write down an array with three elements.</p> <pre><code class="julia hljs">x = [<span class=hljs-number >1</span>, <span class=hljs-number >2</span>, <span class=hljs-number >3</span>]</code></pre>
+<p>Here&#39;s a matrix – a square array with four elements.</p>
+<pre><code class="julia hljs">x = [<span class=hljs-number >1</span> <span class=hljs-number >2</span>; <span class=hljs-number >3</span> <span class=hljs-number >4</span>]</code></pre>
+<p>We often work with arrays of thousands of elements, and don&#39;t usually write them down by hand. Here&#39;s how we can create an array of 5×3 &#61; 15 elements, each a random number from zero to one.</p>
+<pre><code class="julia hljs">x = rand(<span class=hljs-number >5</span>, <span class=hljs-number >3</span>)</code></pre>
+<p>There&#39;s a few functions like this; try replacing <code>rand</code> with <code>ones</code>, <code>zeros</code>, or <code>randn</code> to see what they do.</p>
+<p>By default, Julia works stores numbers is a high-precision format called <code>Float64</code>. In ML we often don&#39;t need all those digits, and can ask Julia to work with <code>Float32</code> instead. We can even ask for more digits using <code>BigFloat</code>.</p>
+<pre><code class="julia hljs">x = rand(<span class=hljs-built_in >BigFloat</span>, <span class=hljs-number >5</span>, <span class=hljs-number >3</span>)
+
+x = rand(<span class=hljs-built_in >Float32</span>, <span class=hljs-number >5</span>, <span class=hljs-number >3</span>)</code></pre>
+<p>We can ask the array how many elements it has.</p>
+<pre><code class="julia hljs">length(x)</code></pre>
+<p>Or, more specifically, what size it has.</p>
+<pre><code class="julia hljs">size(x)</code></pre>
+<p>We sometimes want to see some elements of the array on their own.</p>
+<pre><code class="julia hljs">x
+
+x[<span class=hljs-number >2</span>, <span class=hljs-number >3</span>]</code></pre>
+<p>This means get the second row and the third column. We can also get every row of the third column.</p>
+<pre><code class="julia hljs">x[:, <span class=hljs-number >3</span>]</code></pre>
+<p>We can add arrays, and subtract them, which adds or subtracts each element of the array.</p>
+<pre><code class="julia hljs">x + x
+
+x - x</code></pre>
+<p>Julia supports a feature called <em>broadcasting</em>, using the <code>.</code> syntax. This tiles small arrays &#40;or single numbers&#41; to fill bigger ones.</p>
+<pre><code class="julia hljs">x .+ <span class=hljs-number >1</span></code></pre>
+<p>We can see Julia tile the column vector <code>1:5</code> across all rows of the larger array.</p>
+<pre><code class="julia hljs">zeros(<span class=hljs-number >5</span>,<span class=hljs-number >5</span>) .+ (<span class=hljs-number >1</span>:<span class=hljs-number >5</span>)</code></pre>
+<p>The x&#39; syntax is used to transpose a column <code>1:5</code> into an equivalent row, and Julia will tile that across columns.</p>
+<pre><code class="julia hljs">zeros(<span class=hljs-number >5</span>,<span class=hljs-number >5</span>) .+ (<span class=hljs-number >1</span>:<span class=hljs-number >5</span>)&#x27;</code></pre>
+<p>We can use this to make a times table.</p>
+<pre><code class="julia hljs">(<span class=hljs-number >1</span>:<span class=hljs-number >5</span>) .* (<span class=hljs-number >1</span>:<span class=hljs-number >5</span>)&#x27;</code></pre>
+<p>Finally, and importantly for machine learning, we can conveniently do things like matrix multiply.</p>
+<pre><code class="julia hljs">W = randn(<span class=hljs-number >5</span>, <span class=hljs-number >10</span>)
+x = rand(<span class=hljs-number >10</span>)
+W * x</code></pre>
+<p>Julia&#39;s arrays are very powerful, and you can learn more about what they can do <a href="https://docs.julialang.org/en/v1/manual/arrays/">here</a>.</p>
+<h2 id=cuda_arrays ><a href="#cuda_arrays" class=header-anchor >CUDA Arrays</a></h2>
+<p>CUDA functionality is provided separately by the <a href="https://github.com/JuliaGPU/CUDA.jl">CUDA package</a>. If you have a GPU and CUDA available, you can run <code>&#93; add CUDA</code> in a REPL or IJulia to get it.</p>
+<p>Once CUDA is loaded you can move any array to the GPU with the <code>cu</code> function, and it supports all of the above operations with the same syntax.</p>
+<pre><code class="julia hljs"><span class=hljs-keyword >using</span> CUDA
+x = cu(rand(<span class=hljs-number >5</span>, <span class=hljs-number >3</span>))</code></pre>
+<h2 id=automatic_differentiation ><a href="#automatic_differentiation" class=header-anchor >Automatic Differentiation</a></h2>
+<p>You probably learned to take derivatives in school. We start with a simple mathematical function like</p>
+<pre><code class="julia hljs">f(x) = <span class=hljs-number >3</span>x^<span class=hljs-number >2</span> + <span class=hljs-number >2</span>x + <span class=hljs-number >1</span>
+
+f(<span class=hljs-number >5</span>)</code></pre>
+<p>In simple cases it&#39;s pretty easy to work out the gradient by hand – here it&#39;s <code>6x&#43;2</code>. But it&#39;s much easier to make Flux do the work for us&#33;</p>
+<pre><code class="julia hljs"><span class=hljs-keyword >using</span> Flux: gradient
+
+df(x) = gradient(f, x)[<span class=hljs-number >1</span>]
+
+df(<span class=hljs-number >5</span>)</code></pre>
+<p>You can try this with a few different inputs to make sure it&#39;s really the same as <code>6x&#43;2</code>. We can even do this multiple times &#40;but the second derivative is a fairly boring <code>6</code>&#41;.</p>
+<pre><code class="julia hljs">ddf(x) = gradient(df, x)[<span class=hljs-number >1</span>]
+
+ddf(<span class=hljs-number >5</span>)</code></pre>
+<p>Flux&#39;s AD can handle any Julia code you throw at it, including loops, recursion and custom layers, so long as the mathematical functions you call are differentiable. For example, we can differentiate a Taylor approximation to the <code>sin</code> function.</p>
+<pre><code class="julia hljs">mysin(x) = sum((-<span class=hljs-number >1</span>)^k*x^(<span class=hljs-number >1</span>+<span class=hljs-number >2</span>k)/factorial(<span class=hljs-number >1</span>+<span class=hljs-number >2</span>k) <span class=hljs-keyword >for</span> k <span class=hljs-keyword >in</span> <span class=hljs-number >0</span>:<span class=hljs-number >5</span>)
+
+x = <span class=hljs-number >0.5</span>
+
+mysin(x), gradient(mysin, x)
+
+sin(x), cos(x)</code></pre>
+<p>You can see that the derivative we calculated is very close to <code>cos&#40;x&#41;</code>, as we expect.</p>
+<p>This gets more interesting when we consider functions that take <em>arrays</em> as inputs, rather than just a single number. For example, here&#39;s a function that takes a matrix and two vectors &#40;the definition itself is arbitrary&#41;</p>
+<pre><code class="julia hljs">myloss(W, b, x) = sum(W * x .+ b)
+
+W = randn(<span class=hljs-number >3</span>, <span class=hljs-number >5</span>)
+b = zeros(<span class=hljs-number >3</span>)
+x = rand(<span class=hljs-number >5</span>)
+
+gradient(myloss, W, b, x)</code></pre>
+<p>Now we get gradients for each of the inputs <code>W</code>, <code>b</code> and <code>x</code>, which will come in handy when we want to train models.</p>
+<p>Because ML models can contain hundreds of parameters, Flux provides a slightly different way of writing <code>gradient</code>. We instead mark arrays with <code>param</code> to indicate that we want their derivatives. <code>W</code> and <code>b</code> represent the weight and bias respectively.</p>
+<pre><code class="julia hljs"><span class=hljs-keyword >using</span> Flux: params
+
+W = randn(<span class=hljs-number >3</span>, <span class=hljs-number >5</span>)
+b = zeros(<span class=hljs-number >3</span>)
+x = rand(<span class=hljs-number >5</span>)
+
+y(x) = sum(W * x .+ b)
+
+grads = gradient(()-&gt;y(x), params([W, b]))
+
+grads[W], grads[b]</code></pre>
+<p>We can now grab the gradients of <code>W</code> and <code>b</code> directly from those parameters.</p>
+<p>This comes in handy when working with <em>layers</em>. A layer is just a handy container for some parameters. For example, <code>Dense</code> does a linear transform for you.</p>
+<pre><code class="julia hljs"><span class=hljs-keyword >using</span> Flux
+
+m = Dense(<span class=hljs-number >10</span>, <span class=hljs-number >5</span>)
+
+x = rand(<span class=hljs-built_in >Float32</span>, <span class=hljs-number >10</span>)</code></pre>
+<p>We can easily get the parameters of any layer or model with params with <code>params</code>.</p>
+<pre><code class="julia hljs">params(m)</code></pre>
+<p>This makes it very easy to calculate the gradient for all parameters in a network, even if it has many parameters.</p>
+<pre><code class="julia hljs">x = rand(<span class=hljs-built_in >Float32</span>, <span class=hljs-number >10</span>)
+m = Chain(Dense(<span class=hljs-number >10</span>, <span class=hljs-number >5</span>, relu), Dense(<span class=hljs-number >5</span>, <span class=hljs-number >2</span>), softmax)
+l(x) = sum(Flux.crossentropy(m(x), [<span class=hljs-number >0.5</span>, <span class=hljs-number >0.5</span>]))
+grads = gradient(params(m)) <span class=hljs-keyword >do</span>
+    l(x)
+<span class=hljs-keyword >end</span>
+<span class=hljs-keyword >for</span> p <span class=hljs-keyword >in</span> params(m)
+    println(grads[p])
+<span class=hljs-keyword >end</span></code></pre>
+<p>You don&#39;t have to use layers, but they can be convient for many simple kinds of models and fast iteration.</p>
+<p>The next step is to update our weights and perform optimisation. As you might be familiar, <em>Gradient Descent</em> is a simple algorithm that takes the weights and steps using a learning rate and the gradients. <code>weights &#61; weights - learning_rate * gradient</code>.</p>
+<pre><code class="julia hljs"><span class=hljs-keyword >using</span> Flux.Optimise: update!, Descent
+η = <span class=hljs-number >0.1</span>
+<span class=hljs-keyword >for</span> p <span class=hljs-keyword >in</span> params(m)
+  update!(p, -η * grads[p])
+<span class=hljs-keyword >end</span></code></pre>
+<p>While this is a valid way of updating our weights, it can get more complicated as the algorithms we use get more involved.</p>
+<p>Flux comes with a bunch of pre-defined optimisers and makes writing our own really simple. We just give it the learning rate η:</p>
+<pre><code class="julia hljs">opt = Descent(<span class=hljs-number >0.01</span>)</code></pre>
+<p><code>Training</code> a network reduces down to iterating on a dataset mulitple times, performing these steps in order. Just for a quick implementation, let’s train a network that learns to predict <code>0.5</code> for every input of 10 floats. <code>Flux</code> defines the <code>train&#33;</code> function to do it for us.</p>
+<pre><code class="julia hljs">data, labels = rand(<span class=hljs-number >10</span>, <span class=hljs-number >100</span>), fill(<span class=hljs-number >0.5</span>, <span class=hljs-number >2</span>, <span class=hljs-number >100</span>)
+loss(x, y) = sum(Flux.crossentropy(m(x), y))
+Flux.train!(loss, params(m), [(data,labels)], opt)</code></pre>
+<p>You don&#39;t have to use <code>train&#33;</code>. In cases where aribtrary logic might be better suited, you could open up this training loop like so:</p>
+<pre><code class="julia hljs"><span class=hljs-keyword >for</span> d <span class=hljs-keyword >in</span> training_set <span class=hljs-comment ># assuming d looks like (data, labels)</span>
+    <span class=hljs-comment ># our super logic</span>
+    gs = gradient(params(m)) <span class=hljs-keyword >do</span> <span class=hljs-comment >#m is our model</span>
+      l = loss(d...)
+    <span class=hljs-keyword >end</span>
+    update!(opt, params(m), gs)
+  <span class=hljs-keyword >end</span></code></pre>
+<h2 id=training_a_classifier ><a href="#training_a_classifier" class=header-anchor >Training a Classifier</a></h2>
+<p>Getting a real classifier to work might help cement the workflow a bit more. <a href="https://https://www.cs.toronto.edu/~kriz/cifar.html">CIFAR10</a> is a dataset of 50k tiny training images split into 10 classes.</p>
+<p>We will do the following steps in order:</p>
+<ul>
+<li><p>Load CIFAR10 training and test datasets</p>
+
+<li><p>Define a Convolution Neural Network</p>
+
+<li><p>Define a loss function</p>
+
+<li><p>Train the network on the training data</p>
+
+<li><p>Test the network on the test data</p>
+
+</ul>
+<h3 id=loading_the_dataset ><a href="#loading_the_dataset" class=header-anchor >Loading the Dataset</a></h3>
+<pre><code class="julia hljs"><span class=hljs-keyword >using</span> Statistics
+<span class=hljs-keyword >using</span> Flux, Flux.Optimise
+<span class=hljs-keyword >using</span> MLDatasets: CIFAR10
+<span class=hljs-keyword >using</span> Images.ImageCore
+<span class=hljs-keyword >using</span> Flux: onehotbatch, onecold
+<span class=hljs-keyword >using</span> Base.Iterators: partition
+<span class=hljs-keyword >using</span> CUDA</code></pre>
+<p>This image will give us an idea of what we are dealing with. </p>
+<p><img src="https://pytorch.org/tutorials/_images/cifar10.png" alt=title  /></p>
+<pre><code class="julia hljs">train_x, train_y = CIFAR10.traindata(<span class=hljs-built_in >Float32</span>)
+labels = onehotbatch(train_y, <span class=hljs-number >0</span>:<span class=hljs-number >9</span>)</code></pre>
+<p>The <code>train_x</code> contains 50000 images converted to 32 X 32 X 3 arrays with the third dimension being the 3 channels &#40;R,G,B&#41;. Let&#39;s take a look at a random image from the train_x. For this, we need to permute the dimensions to 3 X 32 X 32 and use <code>colorview</code> to convert it back to an image. </p>
+<pre><code class="julia hljs"><span class=hljs-keyword >using</span> Plots
+image(x) = colorview(RGB, permutedims(x, (<span class=hljs-number >3</span>, <span class=hljs-number >2</span>, <span class=hljs-number >1</span>)))
+plot(image(train_x[:,:,:,rand(<span class=hljs-number >1</span>:<span class=hljs-keyword >end</span>)]))</code></pre>
+<p>We can now arrange the training data in batches of say, 1000 and keep a validation set to track our progress. This process is called minibatch learning, which is a popular method of training large neural networks. Rather that sending the entire dataset at once, we break it down into smaller chunks &#40;called minibatches&#41; that are typically chosen at random, and train only on them. It is shown to help with escaping <a href="https://en.wikipedia.org/wiki/Saddle_point">saddle points</a>.</p>
+<p>The first 49k images &#40;in batches of 1000&#41; will be our training set, and the rest is for validation. <code>partition</code> handily breaks down the set we give it in consecutive parts &#40;1000 in this case&#41;.</p>
+<pre><code class="julia hljs">train = ([(train_x[:,:,:,i], labels[:,i]) <span class=hljs-keyword >for</span> i <span class=hljs-keyword >in</span> partition(<span class=hljs-number >1</span>:<span class=hljs-number >49000</span>, <span class=hljs-number >1000</span>)]) |&gt; gpu
+valset = <span class=hljs-number >49001</span>:<span class=hljs-number >50000</span>
+valX = train_x[:,:,:,valset] |&gt; gpu
+valY = labels[:, valset] |&gt; gpu</code></pre>
+<h3 id=defining_the_classifier ><a href="#defining_the_classifier" class=header-anchor >Defining the Classifier</a></h3>
+<p>Now we can define our Convolutional Neural Network &#40;CNN&#41;.</p>
+<p>A convolutional neural network is one which defines a kernel and slides it across a matrix to create an intermediate representation to extract features from. It creates higher order features as it goes into deeper layers, making it suitable for images, where the strucure of the subject is what will help us determine which class it belongs to.</p>
+<pre><code class="julia hljs">m = Chain(
+  Conv((<span class=hljs-number >5</span>,<span class=hljs-number >5</span>), <span class=hljs-number >3</span>=&gt;<span class=hljs-number >16</span>, relu),
+  MaxPool((<span class=hljs-number >2</span>,<span class=hljs-number >2</span>)),
+  Conv((<span class=hljs-number >5</span>,<span class=hljs-number >5</span>), <span class=hljs-number >16</span>=&gt;<span class=hljs-number >8</span>, relu),
+  MaxPool((<span class=hljs-number >2</span>,<span class=hljs-number >2</span>)),
+  x -&gt; reshape(x, :, size(x, <span class=hljs-number >4</span>)),
+  Dense(<span class=hljs-number >200</span>, <span class=hljs-number >120</span>),
+  Dense(<span class=hljs-number >120</span>, <span class=hljs-number >84</span>),
+  Dense(<span class=hljs-number >84</span>, <span class=hljs-number >10</span>),
+  softmax) |&gt; gpu</code></pre>
+<p>We will use a crossentropy loss and an Momentum optimiser here. Crossentropy will be a good option when it comes to working with mulitple independent classes. Momentum gradually lowers the learning rate as we proceed with the training. It helps maintain a bit of adaptivity in our optimisation, preventing us from over shooting from our desired destination.</p>
+<pre><code class="julia hljs"><span class=hljs-keyword >using</span> Flux: crossentropy, Momentum
+
+loss(x, y) = sum(crossentropy(m(x), y))
+opt = Momentum(<span class=hljs-number >0.01</span>)</code></pre>
+<p>We can start writing our train loop where we will keep track of some basic accuracy numbers about our model. We can define an <code>accuracy</code> function for it like so.</p>
+<pre><code class="julia hljs">accuracy(x, y) = mean(onecold(m(x), <span class=hljs-number >0</span>:<span class=hljs-number >9</span>) .== onecold(y, <span class=hljs-number >0</span>:<span class=hljs-number >9</span>))</code></pre>
+<h3 id=training_the_classifier ><a href="#training_the_classifier" class=header-anchor >Training the Classifier</a></h3>
+<p>Training is where we do a bunch of the interesting operations we defined earlier, and see what our net is capable of. We will loop over the dataset 10 times and feed the inputs to the neural network and optimise.</p>
+<pre><code class="julia hljs">epochs = <span class=hljs-number >10</span>
+
+<span class=hljs-keyword >for</span> epoch = <span class=hljs-number >1</span>:epochs
+  <span class=hljs-keyword >for</span> d <span class=hljs-keyword >in</span> train
+    gs = gradient(params(m)) <span class=hljs-keyword >do</span>
+      l = loss(d...)
+    <span class=hljs-keyword >end</span>
+    update!(opt, params(m), gs)
+  <span class=hljs-keyword >end</span>
+  <span class=hljs-meta >@show</span> accuracy(valX, valY)
+<span class=hljs-keyword >end</span></code></pre>
+<p>Seeing our training routine unfold gives us an idea of how the network learnt the function. This is not bad for a small hand-written network, trained for a limited time.</p>
+<h3 id=training_on_a_gpu ><a href="#training_on_a_gpu" class=header-anchor >Training on a GPU</a></h3>
+<p>The <code>gpu</code> functions you see sprinkled through this bit of the code tell Flux to move these entities to an available GPU, and subsequently train on it. No extra faffing about required&#33; The same bit of code would work on any hardware with some small annotations like you saw here.</p>
+<h3 id=testing_the_network ><a href="#testing_the_network" class=header-anchor >Testing the Network</a></h3>
+<p>We have trained the network for 100 passes over the training dataset. But we need to check if the network has learnt anything at all.</p>
+<p>We will check this by predicting the class label that the neural network outputs, and checking it against the ground-truth. If the prediction is correct, we add the sample to the list of correct predictions. This will be done on a yet unseen section of data.</p>
+<p>Okay, first step. Let us perform the exact same preprocessing on this set, as we did on our training set.</p>
+<pre><code class="julia hljs">test_x, test_y = CIFAR10.testdata(<span class=hljs-built_in >Float32</span>)
+test_labels = onehotbatch(test_y, <span class=hljs-number >0</span>:<span class=hljs-number >9</span>)
+
+test = gpu.([(test_x[:,:,:,i], test_labels[:,i]) <span class=hljs-keyword >for</span> i <span class=hljs-keyword >in</span> partition(<span class=hljs-number >1</span>:<span class=hljs-number >10000</span>, <span class=hljs-number >1000</span>)])</code></pre>
+<p>Next, display an image from the test set.</p>
+<pre><code class="julia hljs">plot(image(test_x[:,:,:,rand(<span class=hljs-number >1</span>:<span class=hljs-keyword >end</span>)]))</code></pre>
+<p>The outputs are energies for the 10 classes. Higher the energy for a class, the more the network thinks that the image is of the particular class. Every column corresponds to the output of one image, with the 10 floats in the column being the energies.</p>
+<p>Let&#39;s see how the model fared.</p>
+<pre><code class="julia hljs">ids = rand(<span class=hljs-number >1</span>:<span class=hljs-number >10000</span>, <span class=hljs-number >5</span>)
+rand_test = test_x[:,:,:,ids] |&gt; gpu
+rand_truth = test_y[ids]
+m(rand_test)</code></pre>
+<p>This looks similar to how we would expect the results to be. At this point, it&#39;s a good idea to see how our net actually performs on new data, that we have prepared.</p>
+<pre><code class="julia hljs">accuracy(test[<span class=hljs-number >1</span>]...)</code></pre>
+<p>This is much better than random chance set at 10&#37; &#40;since we only have 10 classes&#41;, and not bad at all for a small hand written network like ours.</p>
+<p>Let&#39;s take a look at how the net performed on all the classes performed individually.</p>
+<pre><code class="julia hljs">class_correct = zeros(<span class=hljs-number >10</span>)
+class_total = zeros(<span class=hljs-number >10</span>)
+<span class=hljs-keyword >for</span> i <span class=hljs-keyword >in</span> <span class=hljs-number >1</span>:<span class=hljs-number >10</span>
+  preds = m(test[i][<span class=hljs-number >1</span>])
+  lab = test[i][<span class=hljs-number >2</span>]
+  <span class=hljs-keyword >for</span> j = <span class=hljs-number >1</span>:<span class=hljs-number >1000</span>
+    pred_class = findmax(preds[:, j])[<span class=hljs-number >2</span>]
+    actual_class = findmax(lab[:, j])[<span class=hljs-number >2</span>]
+    <span class=hljs-keyword >if</span> pred_class == actual_class
+      class_correct[pred_class] += <span class=hljs-number >1</span>
+    <span class=hljs-keyword >end</span>
+    class_total[actual_class] += <span class=hljs-number >1</span>
+  <span class=hljs-keyword >end</span>
+<span class=hljs-keyword >end</span>
+
+class_correct ./ class_total</code></pre>
+<p>The spread seems pretty good, with certain classes performing significantly better than the others. Why should that be?</p>
+
+
+
+<p class=author >– Saswat Das, Mike Innes, Andrew Dinhobl, Ygor Canalli, Sudhanshu Agrawal, João Felipe Santos</p>
+
+</div>    
+
+    
+      </div>
+    </div>
+    
+
+    
+    <div class="container footer lighter">
+      <p>Flux: A Deep Learning Library for the Julia Programming Language
+</p>
+      <a href="https://twitter.com/FluxML?ref_src=twsrc%5Etfw" class=twitter-follow-button  data-show-count=false >Follow @FluxML</a>
+      <script async src="https://platform.twitter.com/widgets.js" charset=utf-8 ></script>
+    </div>
+
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    
+    
+    
+    <script src="/fluxml.github.io//instant.page/1.0.0" type=module  integrity="sha384-6w2SekMzCkuMQ9sEbq0cLviD/yR2HfA/+ekmKiBnFlsoSvb/VmQFSi/umVShadQI"></script>

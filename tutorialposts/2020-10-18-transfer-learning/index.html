@@ -1,0 +1,59 @@
+<!DOCTYPE html> <html lang=en > <style> #cppn{ position:absolute; top:0; bottom:0; height: 100%; width: 100vw; } iframe { display: block; border-style:none; } </style> <meta property="og:title" content=Flux.jl > <meta property="og:description" content="The elegant machine learning library"> <meta property="og:image" content="/assets/images/FluxGitHubPreview.png"> <meta property="og:url" content=fluxml.ai > <meta name="twitter:title" content=Flux.jl > <meta name="twitter:description" content="The elegant machine learning library"> <meta name="twitter:image" content="/assets/images/FluxGitHubPreview.png"> <meta name="twitter:card" content=summary_large_image > <link rel=apple-touch-icon  sizes=180x180  href="assets/favicon_io/apple-touch-icon.png"> <link rel=icon  type="image/png" sizes=32x32  href="assets/favicon_io/favicon-32x32.png"> <link rel=icon  type="image/png" sizes=16x16  href="assets/favicon_io/favicon-16x16.png"> <link rel=manifest  href="assets/favicon_io/site.webmanifest"> <script async src="https://www.googletagmanager.com/gtag/js?id=UA-36890222-9"></script> <script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-36890222-9'); </script> <meta charset=utf-8 > <meta name=viewport  content="width=device-width, initial-scale=1, shrink-to-fit=no"> <link rel=stylesheet  href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin=anonymous > <link rel=stylesheet  href="../../css/script_default.css"> <link rel=stylesheet  href="../../css/site.css"> <link rel=stylesheet  href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin=anonymous > <link rel=stylesheet  href="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin=anonymous > <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/katex.min.js" integrity="sha384-K3vbOmF2BtaVai+Qk37uypf7VrgBubhQreNQe9aGsz9lB63dIFiQVlJbr92dw2Lx" crossorigin=anonymous ></script> <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/contrib/auto-render.min.js" integrity="sha384-kmZOZB5ObwgQnS/DuDg6TScgOiWWBiVt0plIRkZCmE6rDZGrEOQeHM5PcHi+nyqe" crossorigin=anonymous  onload="renderMathInElement(document.body, { delimiters: [ {left: '$[[', right: ']]', display: true}, {left: '\\[', right: '\\]', display: true}, {left: '[[', right: ']]', display: false} ] });"> </script> <title>Flux – Elegant ML</title> <nav class="navbar navbar-expand-lg navbar-dark container lighter"> <a class=navbar-brand  href="../../"> <div class=logo  style="font-size:30pt;margin-top:-15px;margin-bottom:-10px;">flux</div> </a> <button class=navbar-toggler  type=button  data-toggle=collapse  data-target="#navbarSupportedContent" aria-controls=navbarSupportedContent  aria-expanded=false  aria-label="Toggle navigation"> <span class=navbar-toggler-icon ></span> </button> <div class="collapse navbar-collapse" id=navbarSupportedContent > <ul class="navbar-nav mr-auto"> <li class=nav-item > <a class=nav-link  href="../../getting_started/">Getting Started</a> <li class=nav-item > <a class=nav-link  href="https://fluxml.ai/Flux.jl/" target=_blank >Docs</a> <li class=nav-item > <a class=nav-link  href="../../blog/">Blog</a> <li class=nav-item > <a class=nav-link  href="../../tutorials/">Tutorials</a> <li class=nav-item > <a class=nav-link  href="https://fluxml.ai/Flux.jl/dev/ecosystem/">Ecosystem</a> <li class=nav-item > <a class=nav-link  href="../../gsoc/">GSoC</a> <li class=nav-item > <a class=nav-link  href="https://discourse.julialang.org/c/domain/ML" target=_blank >Discuss</a> <li class=nav-item > <a class=nav-link  href="https://github.com/FluxML/Flux.jl" target=_blank >GitHub</a> <li class=nav-item > <a class=nav-link  href="https://stackoverflow.com/questions/tagged/flux.jl" target=_blank >Stack Overflow</a> <li class=nav-item > <a class=nav-link  href="https://github.com/FluxML/Flux.jl/blob/master/CONTRIBUTING.md" target=_blank >Contribute</a> </ul> </div> </nav> <div class=content > <div class=container > <h1>Transfer Learning with Flux</h1> <div class=franklin-content > <p>This article is intended to be a general guide to how transfer learning works in the Flux ecosystem. We assume a certain familiarity of the reader with the concept of transfer learning. Having said that, we will start off with a basic definition of the setup and what we are trying to achieve. There are many resources online that go in depth as to why transfer learning is an effective tool to solve many ML problems, and we recommend checking some of those out.</p> <p>Machine Learning today has evolved to use many highly trained models in a general task, where they are tuned to perform especially well on a subset of the problem.</p> <p>This is one of the key ways in which larger &#40;or smaller&#41; models are used in practice. They are trained on a general problem, achieving good results on the test set, and then subsequently tuned on specialised datasets.</p> <p>In this process, our model is already pretty well trained on the problem, so we don&#39;t need to train it all over again as if from scratch. In fact, as it so happens, we don&#39;t need to do that at all&#33; We only need to tune the last couple of layers to get the most performance from our models. The exact last number of layers is dependant on the problem setup and the expected outcome, but a common tip is to train the last few <code>Dense</code> layers in a more complicated model.</p> <p>So let&#39;s try to simulate the problem in Flux.</p> <p>We&#39;ll tune a pretrained ResNet from Metalhead as a proxy. We will tune the <code>Dense</code> layers in there on a new set of images.</p> <pre><code class="julia hljs"><span class=hljs-keyword >using</span> Flux, Metalhead
+<span class=hljs-keyword >using</span> Flux: <span class=hljs-meta >@epochs</span>
+<span class=hljs-keyword >using</span> Metalhead.Images
+resnet = ResNet().layers</code></pre> <p>If we intended to add a new class of objects in there, we need only <code>reshape</code> the output from the previous layers accordingly. Our model would look something like so:</p> <pre><code class="julia hljs">model = Chain(
+   resnet[<span class=hljs-number >1</span>:<span class=hljs-keyword >end</span>-<span class=hljs-number >2</span>],               <span class=hljs-comment ># We only need to pull out the dense layer in here</span>
+   x -&gt; reshape(x, size_we_want), <span class=hljs-comment ># / global_avg_pooling layer</span>
+   Dense(reshaped_input_features, n_classes)
+ )</code></pre> <p>We will use the <a href="https://www.kaggle.com/c/dogs-vs-cats/data?select&#61;train.zip">Dogs vs. Cats</a> dataset from Kaggle for our use here. Make sure to download the <code>train.zip</code> file and extract it into a <code>train</code> folder.</p> <p>The <a href="https://github.com/FluxML/model-zoo/blob/master/tutorials/transfer_learning/dataloader.jl"><code>dataloader.jl</code></a> script contains a pre-written <code>load_batch</code> function which will load a set of images, shuffled between dogs and cats along with their correct labels.</p> <pre><code class="julia hljs">include(<span class=hljs-string >&quot;dataloader.jl&quot;</span>)</code></pre>
+<p>Finally, the model looks something like:</p>
+<pre><code class="julia hljs">model = Chain(
+  resnet[<span class=hljs-number >1</span>:<span class=hljs-keyword >end</span>-<span class=hljs-number >2</span>],
+  Dense(<span class=hljs-number >2048</span>, <span class=hljs-number >1000</span>),  
+  Dense(<span class=hljs-number >1000</span>, <span class=hljs-number >256</span>),
+  Dense(<span class=hljs-number >256</span>, <span class=hljs-number >2</span>),        <span class=hljs-comment ># we get 2048 features out, and we have 2 classes</span>
+)</code></pre>
+<p>To speed up training, let’s move everything over to the GPU</p>
+<pre><code class="julia hljs">model = model |&gt; gpu
+dataset = [gpu.(load_batch(<span class=hljs-number >10</span>)) <span class=hljs-keyword >for</span> i <span class=hljs-keyword >in</span> <span class=hljs-number >1</span>:<span class=hljs-number >10</span>]</code></pre>
+<p>After this, we only need to define the other parts of the training pipeline like we usually do.</p>
+<pre><code class="julia hljs">opt = ADAM()
+loss(x,y) = Flux.Losses.logitcrossentropy(model(x), y)</code></pre>
+<p>Now to train. As discussed earlier, we don’t need to pass all the parameters to our training loop. Only the ones we need to fine-tune. Note that we could have picked and chosen the layers we want to train individually as well, but this is sufficient for our use as of now.</p>
+<pre><code class="julia hljs">ps = Flux.params(model)</code></pre>
+<p><strong>Note</strong>: Normally, you would only re-train the dense layers via <code>model&#91;2:end&#93;</code> but in this case, the pre-trained models from Metalhead.jl are not currently available. This will change in the future once the pre-trained models are once again available.</p>
+<p>And now, let&#39;s train&#33;</p>
+<pre><code class="julia hljs"><span class=hljs-meta >@epochs</span> <span class=hljs-number >2</span> Flux.train!(loss, ps, dataset, opt)</code></pre>
+<p>And there you have it, a pretrained model, fine tuned to tell the the dogs from the cats.</p>
+<p>We can verify this too.</p>
+<pre><code class="julia hljs">imgs, labels = gpu.(load_batch(<span class=hljs-number >10</span>))
+display(model(imgs))
+
+labels</code></pre>
+
+
+
+<p class=author >– Dhairya Gandhi</p>
+
+</div>    
+
+    
+      </div>
+    </div>
+    
+
+    
+    <div class="container footer lighter">
+      <p>Flux: A Deep Learning Library for the Julia Programming Language
+</p>
+      <a href="https://twitter.com/FluxML?ref_src=twsrc%5Etfw" class=twitter-follow-button  data-show-count=false >Follow @FluxML</a>
+      <script async src="https://platform.twitter.com/widgets.js" charset=utf-8 ></script>
+    </div>
+
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    
+    
+    
+    <script src="/fluxml.github.io//instant.page/1.0.0" type=module  integrity="sha384-6w2SekMzCkuMQ9sEbq0cLviD/yR2HfA/+ekmKiBnFlsoSvb/VmQFSi/umVShadQI"></script>
